@@ -4,18 +4,25 @@ import Landing from "./pages/Landing";
 import About from "./pages/About";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Cart from "./pages/Cart";
+import { UserProvider } from "./components/UserProvider";
+import SingleProduct from "./pages/SingleProduct";
+import { ErrorElement } from "./components";
 
+// Actions
 import { action as loginAction } from "./pages/Login";
 import { action as registerAction } from "./pages/Register";
-import { UserProvider } from "./components/UserProvider";
+
+// Loaders
 import { loader as landingLoader } from "./pages/Landing";
 import { loader as cartLoader } from "./pages/Cart";
-import Cart from "./pages/Cart";
+import { loader as singleProductLoader } from "./pages/SingleProduct";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <HomeLayout />,
+    errorElement: <ErrorElement />,
     children: [
       {
         element: <Landing />,
@@ -26,6 +33,11 @@ const router = createBrowserRouter([
         element: <Cart />,
         path: "/cart",
         loader: cartLoader,
+      },
+      {
+        element: <SingleProduct />,
+        path: "/product/:id",
+        loader: singleProductLoader,
       },
       {
         element: <About />,

@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import { Form, redirect, useActionData, useNavigate } from "react-router-dom";
+import { Form, redirect, useActionData } from "react-router-dom";
 import FormInput from "../components/FormInput";
 import SubmitBtn from "../components/SubmitBtn";
 import { customFetch } from "../utils";
@@ -13,16 +12,17 @@ export const action = async ({ request }) => {
   };
   try {
     const response = await customFetch.post("/auth/local", data);
-    localStorage.setItem("user", JSON.stringify(response.data));
+    localStorage.setItem("user", JSON.stringify(response.data.user.confirmed));
     return redirect("/");
   } catch (error) {
-    console.log(error);
-
-    return null;
+    return { error: "Invalid login credentials. Please try again." };
   }
 };
 
 function Login() {
+  const action = useActionData();
+  console.log(action);
+
   return (
     <section className="grid place-items-center mt-10">
       <Form
@@ -33,6 +33,10 @@ function Login() {
         <FormInput label="email" type="email" name="identifier" />
         <FormInput label="password" type="password" name="password" />
         <SubmitBtn text="login" />
+
+        {action?.error && (
+          <p className="text-center text-red-400 mt-2">{action.error}</p>
+        )}
       </Form>
     </section>
   );

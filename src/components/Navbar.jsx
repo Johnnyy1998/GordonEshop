@@ -6,19 +6,19 @@ import { BsCart3, BsMoonFill, BsSunFill } from "react-icons/bs";
 import { useUser } from "./UserProvider";
 
 const themes = {
-  autumn: "autumn",
-  coffee: "coffee",
+  winter: "winter",
+  dracula: "dracula",
 };
 
 const getThemeFromLocalStorage = () => {
-  return localStorage.getItem("theme") || themes.autumn;
+  return localStorage.getItem("theme") || themes.winter;
 };
 
 function Navbar() {
   const [theme, setTheme] = useState(getThemeFromLocalStorage);
   const handleTheme = () => {
-    const { autumn, coffee } = themes;
-    const newTheme = theme === autumn ? coffee : autumn;
+    const { winter, dracula } = themes;
+    const newTheme = theme === winter ? dracula : winter;
     setTheme(newTheme);
   };
 

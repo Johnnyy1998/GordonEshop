@@ -1,7 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useUser } from "../components/UserProvider";
 
 function About() {
+  const { user } = useUser();
+
   return (
     <>
       <div className="flex flex-wrap gap-2 sm:gap-x-6 items-center justify-center text-4xl font-bold sm:text-5xl">
@@ -21,11 +24,13 @@ function About() {
           className="w-full rounded-md shadow-lg"
         ></img>
       </div>
-      <div className="flex justify-center mt-8 text-primary text-3xl">
-        <Link to="/register" className="link-hover">
-          Join Us
-        </Link>
-      </div>
+      {!user && (
+        <div className="flex justify-center mt-8 text-primary text-3xl">
+          <Link to="/register" className="link-hover">
+            Join Us
+          </Link>
+        </div>
+      )}
     </>
   );
 }

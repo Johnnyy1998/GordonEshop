@@ -9,7 +9,7 @@ function SubmitBtn({ text }) {
   return (
     <button
       disabled={isSubmitting}
-      className="btn btn-primary mt-2"
+      className="btn btn-secondary mt-2"
       type="submit"
     >
       {text}

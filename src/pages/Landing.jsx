@@ -36,22 +36,24 @@ function Landing() {
               key={product.id}
               className="card w-full shadow-xl hover:shadow-3xl transition duration-300 mt-2"
             >
-              <h1 className="text-2xl capitalize text-center">{title}</h1>
-              <figure className="px-4 pt-4">
-                <img
-                  src={image}
-                  alt={title}
-                  className="rounded-xl h-64 md:h-48 w-full object-cover"
-                />
-              </figure>
-              <div className="card-body items-center text-center">
-                <h2 className="card-title capitalize tracking-wider">
-                  Made by: {company}
-                </h2>
-                <h2 className="text-secondary">{priceModification(price)}</h2>
-              </div>
+              <Link to={`/product/${product.id}`} className="link link-hover">
+                <h1 className="text-2xl capitalize text-center">{title}</h1>
+                <figure className="px-4 pt-4">
+                  <img
+                    src={image}
+                    alt={title}
+                    className="rounded-xl h-64 md:h-48 w-full object-cover"
+                  />
+                </figure>
+                <div className="card-body items-center text-center">
+                  <h2 className="card-title capitalize tracking-wider">
+                    Made by: {company}
+                  </h2>
+                  <h2 className="text-secondary">{priceModification(price)}</h2>
+                </div>
+              </Link>
               <button
-                className="btn"
+                className="btn btn-secondary"
                 onClick={() => {
                   handleBasket(product);
                 }}

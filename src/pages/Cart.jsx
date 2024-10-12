@@ -1,7 +1,7 @@
 import { useUser } from "../components/UserProvider";
 import { priceModification } from "../utils";
 import SectionTitle from "../components/SectionTitle";
-import { useLoaderData, useNavigate } from "react-router-dom";
+import { Link, useLoaderData, useNavigate } from "react-router-dom";
 import Order from "../components/Order";
 
 export const loader = () => {
@@ -62,34 +62,35 @@ function Cart() {
         <div className="w-3/5 md:w-2/3 grid grid-cols-1 md:grid-cols-2 gap-4">
           {basket.map((cart) => {
             const { title, image, price } = cart.attributes;
-            console.log(cart);
             return (
               <section
                 key={cart.id}
                 className="card w-full shadow-xl hover:shadow-3xl transition duration-300 mt-2"
               >
-                <h1 className="text-2xl capitalize text-center">{title}</h1>
-                <figure className="px-4 pt-4">
-                  <img
-                    src={image}
-                    alt={title}
-                    className="rounded-xl h-64 md:h-48 w-full object-cover"
-                  />
-                </figure>
-                <div className="px-5 my-5 ">
-                  <div className="flex justify-between">
-                    <h2 className="font-semibold">Quantity:</h2>
-                    <h2 className="font-semibold">{cart.quantity}</h2>
+                <Link to={`/product/${cart.id}`}>
+                  <h1 className="text-2xl capitalize text-center">{title}</h1>
+                  <figure className="px-4 pt-4">
+                    <img
+                      src={image}
+                      alt={title}
+                      className="rounded-xl h-64 md:h-48 w-full object-cover"
+                    />
+                  </figure>
+                  <div className="px-5 my-5 ">
+                    <div className="flex justify-between">
+                      <h2 className="font-semibold">Quantity:</h2>
+                      <h2 className="font-semibold">{cart.quantity}</h2>
+                    </div>
+                    <div className="flex justify-between mt-2">
+                      <h2 className="font-semibold">Unit Price:</h2>
+                      <h2 className="font-semibold">
+                        {priceModification(price)}
+                      </h2>
+                    </div>
                   </div>
-                  <div className="flex justify-between mt-2">
-                    <h2 className="font-semibold">Unit Price:</h2>
-                    <h2 className="font-semibold">
-                      {priceModification(price)}
-                    </h2>
-                  </div>
-                </div>
+                </Link>
                 <button
-                  className="btn"
+                  className="btn btn-secondary"
                   onClick={() => removeItem(cart.id, cart)}
                 >
                   remove item

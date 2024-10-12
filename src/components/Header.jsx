@@ -6,7 +6,7 @@ function Header() {
   const { user, setUser } = useUser();
 
   const handleSingOut = () => {
-    localStorage.removeItem("user");
+    localStorage.clear();
     setUser(null);
     Navigate("/login");
   };
