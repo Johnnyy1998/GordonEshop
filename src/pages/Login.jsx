@@ -1,7 +1,9 @@
-import { Form, redirect, useActionData } from "react-router-dom";
+import { Form, useActionData, useNavigate } from "react-router-dom";
 import FormInput from "../components/FormInput";
 import SubmitBtn from "../components/SubmitBtn";
 import { customFetch } from "../utils";
+import { useUser } from "../components/UserProvider";
+import { useEffect } from "react";
 
 export const action = async ({ request }) => {
   const formData = await request.formData();
@@ -13,15 +15,24 @@ export const action = async ({ request }) => {
   try {
     const response = await customFetch.post("/auth/local", data);
     localStorage.setItem("user", JSON.stringify(response.data.user.confirmed));
-    return redirect("/");
+    return { user: response.data.user };
+    //return response;
   } catch (error) {
     return { error: "Invalid login credentials. Please try again." };
   }
 };
 
 function Login() {
-  const action = useActionData();
-  console.log(action);
+  const actionData = useActionData();
+  const { setUser } = useUser();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (actionData?.user) {
+      setUser(actionData.user.confirmed);
+      navigate("/");
+    }
+  }, [actionData]);
 
   return (
     <section className="grid place-items-center mt-10">

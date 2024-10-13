@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useUser } from "../components/UserProvider";
 import { customFetch, priceModification } from "../utils";
 import { Link, useLoaderData } from "react-router-dom";
@@ -9,20 +9,11 @@ const url = "/products";
 export const loader = async () => {
   const response = await customFetch(url);
   const data = response.data.data;
-  console.log(data);
   return data;
 };
 
 function Landing() {
-  const { setUser, handleBasket } = useUser();
-
-  useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-  }, [setUser]);
-
+  const { handleBasket } = useUser();
   const products = useLoaderData();
 
   return (
