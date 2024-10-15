@@ -3,7 +3,8 @@ import { Link, Navigate } from "react-router-dom";
 import { useUser } from "./UserProvider";
 
 function Header() {
-  const { user, setUser } = useUser();
+  const { setUser } = useUser();
+  const isUserLogIn = localStorage.getItem("user");
 
   const handleSingOut = () => {
     localStorage.clear();
@@ -14,7 +15,7 @@ function Header() {
   return (
     <header className="bg-neutral py-1 text-neutral-content text-sm">
       <div className="flex gap-6 justify-end align-element">
-        {user ? (
+        {isUserLogIn ? (
           <Link to="/" className="link-hover" onClick={handleSingOut}>
             Sign out
           </Link>
