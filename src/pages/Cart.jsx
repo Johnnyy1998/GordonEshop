@@ -1,13 +1,13 @@
-import { useUser } from "../components/UserProvider";
 import { priceModification } from "../utils";
 import SectionTitle from "../components/SectionTitle";
 import { Link, useLoaderData, useNavigate } from "react-router-dom";
 import Order from "../components/Order";
+import useUserStore from "../components/globalZustand";
+import { useEffect, useState } from "react";
 
 export const loader = () => {
   try {
     const storedBasket = localStorage.getItem("cart");
-    // Ověříme, že `storedBasket` není `null`, `undefined` nebo prázdný řetězec
     if (!storedBasket || storedBasket === "undefined") {
       return []; // Pokud je prázdný, vrátíme prázdné pole
     }
@@ -15,20 +15,40 @@ export const loader = () => {
     return data || [];
   } catch (error) {
     console.error("Error parsing cart data from localStorage:", error);
-    return []; // Pokud je v JSON nějaký problém, vrátíme prázdné pole
+    return [];
   }
 };
 
 function Cart() {
-  const basket = useLoaderData();
+  const [basket, setBasket] = useState(useLoaderData());
+  const { setTotalItems, user, setUser } = useUserStore();
+
+  useEffect(() => {
+    const lastUser = JSON.parse(localStorage.getItem("user"));
+    setUser(lastUser);
+  }, []);
+
   const navigate = useNavigate();
-  const { setTotalItems, totalItems } = useUser();
 
   if (basket.length === 0) {
-    setTotalItems(0);
-    localStorage.setItem("totalCount", JSON.stringify(0));
-    return <SectionTitle text="Your Cart is Empty" />;
+    return (
+      <>
+        <SectionTitle text="Your Cart is Empty" />
+        <Link
+          to="/"
+          className="btn btn-secondary mt-4 link-hover flex items-center text-xl"
+        >
+          go home
+        </Link>
+      </>
+    );
   }
+
+  const handleCheckoutClick = () => {
+    if (!user) {
+      alert("musis se prihlasit");
+    } else navigate("/checkout");
+  };
 
   const removeItem = (idToRemove, item) => {
     const currentCart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -45,14 +65,14 @@ function Cart() {
         return itemik;
       });
     }
-    setTotalItems((prevTotalItems) => {
-      const newTotalItems = prevTotalItems - 1;
-      localStorage.setItem("totalCount", JSON.stringify(newTotalItems));
-      return newTotalItems;
-    });
+    const currentTotalItems =
+      JSON.parse(localStorage.getItem("totalCount")) || 0;
+    const newTotalItems = currentTotalItems - 1;
+    localStorage.setItem("totalCount", JSON.stringify(newTotalItems));
+    setTotalItems(newTotalItems);
 
     localStorage.setItem("cart", JSON.stringify(updateCart));
-    navigate("/cart");
+    setBasket(updateCart);
   };
 
   return (
@@ -102,6 +122,20 @@ function Cart() {
         <div className="w-2/5 md:w-1/3">
           <h1 className="capitalize text-2xl md:text-3xl text-center">Order</h1>
           <Order basket={basket} />
+          <button
+            disabled={!user}
+            onClick={handleCheckoutClick}
+            className="link-hover link btn btn-secondary w-full mt-5"
+          >
+            Checkout
+          </button>
+          {!user && (
+            <p className=" text-primary text-center mt-3">
+              <Link to="/login" className="link-hover">
+                First, you need to login
+              </Link>
+            </p>
+          )}
         </div>
       </div>
     </div>

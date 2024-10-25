@@ -1,9 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useUser } from "../components/UserProvider";
+import useUserStore from "../components/globalZustand";
 
 function About() {
-  const { user } = useUser();
+  const { user } = useUserStore();
 
   return (
     <>

@@ -1,24 +1,26 @@
 import React from "react";
-import { Link, Navigate } from "react-router-dom";
-import { useUser } from "./UserProvider";
+import { Link } from "react-router-dom";
+import useUserStore from "./globalZustand";
 
 function Header() {
-  const { setUser } = useUser();
-  const isUserLogIn = localStorage.getItem("user");
-
+  const { setUser } = useUserStore();
+  const isUserLogIn = JSON.parse(localStorage.getItem("user"));
   const handleSingOut = () => {
     localStorage.clear();
-    setUser(null);
-    Navigate("/login");
+    //zustand.docs.pmnd.rs/getting-started/introduction
+    https: setUser(null);
   };
 
   return (
     <header className="bg-neutral py-1 text-neutral-content text-sm">
       <div className="flex gap-6 justify-end align-element">
         {isUserLogIn ? (
-          <Link to="/" className="link-hover" onClick={handleSingOut}>
-            Sign out
-          </Link>
+          <>
+            <span>Hello, {isUserLogIn.username}</span>
+            <Link to="/login" className="link-hover" onClick={handleSingOut}>
+              Sign out
+            </Link>
+          </>
         ) : (
           <>
             <Link to="/login" className="link-hover">

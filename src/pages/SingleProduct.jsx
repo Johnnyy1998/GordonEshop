@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from "react";
 import { customFetch, priceModification } from "../utils";
 import { Link, useLoaderData } from "react-router-dom";
 import SectionTitle from "../components/SectionTitle";
-import { useUser } from "../components/UserProvider";
-import SubmitBtn from "../components/SubmitBtn";
+import useUserStore from "../components/globalZustand";
 
 export const loader = async ({ params }) => {
   const { id } = params;
@@ -18,7 +16,7 @@ function SingleProduct() {
   const { company, description, image, price, title } =
     useLoaderData().attributes;
   const product = useLoaderData();
-  const { handleBasket } = useUser();
+  const { handleBasket } = useUserStore();
 
   // LocalStorage
   const cart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -27,6 +25,8 @@ function SingleProduct() {
     const itemCart = cart.filter((item) => item.id === product.id);
     quantity = itemCart.length > 0 ? itemCart[0].quantity : 0;
   }
+
+  console.log(product);
 
   return (
     <>

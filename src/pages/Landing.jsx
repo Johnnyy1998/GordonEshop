@@ -1,8 +1,8 @@
 import React from "react";
-import { useUser } from "../components/UserProvider";
 import { customFetch, priceModification } from "../utils";
 import { Link, useLoaderData } from "react-router-dom";
 import SectionTitle from "../components/SectionTitle";
+import useUserStore from "../components/globalZustand";
 
 const url = "/products";
 
@@ -13,7 +13,7 @@ export const loader = async () => {
 };
 
 function Landing() {
-  const { handleBasket } = useUser();
+  const { handleBasket } = useUserStore();
   const products = useLoaderData();
 
   return (

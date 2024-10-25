@@ -4,7 +4,7 @@ function FormInput({ label, type, name }) {
   return (
     <div className="form-control">
       <label className="label">
-        <span className="label-text">{label}</span>
+        <span className="label-text font-semibold">{label}</span>
       </label>
       <input type={type} name={name} className="input input-bordered" />
     </div>

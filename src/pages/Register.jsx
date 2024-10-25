@@ -1,4 +1,4 @@
-import { Form, Link, redirect } from "react-router-dom";
+import { Form, Link, redirect, useActionData } from "react-router-dom";
 import FormInput from "../components/FormInput";
 import SubmitBtn from "../components/SubmitBtn";
 
@@ -12,16 +12,12 @@ export const action = async ({ request }) => {
     const response = await customFetch.post("/auth/local/register", data);
     return redirect("/login");
   } catch (error) {
-    const errorMessage =
-      error?.response?.data?.error?.message ||
-      "please double check your credentials";
-
-    toast.error(errorMessage);
-    return null;
+    return { error: "Please double check your credentials" };
   }
 };
 
 function Register() {
+  const action = useActionData();
   return (
     <section className="grid place-items-center mt-10">
       <Form
@@ -38,6 +34,9 @@ function Register() {
             Click for login
           </Link>
         </span>
+        {action?.error && (
+          <p className="text-center text-red-400 mt-2">{action.error}</p>
+        )}
       </Form>
     </section>
   );

@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import { FaBarsStaggered } from "react-icons/fa6";
 import NavLinks from "./NavLinks";
 import { BsCart3, BsMoonFill, BsSunFill } from "react-icons/bs";
-import { useUser } from "./UserProvider";
+import useUserStore from "./globalZustand";
 
 const themes = {
   winter: "winter",
@@ -27,7 +27,8 @@ function Navbar() {
     localStorage.setItem("theme", theme);
   }, [theme]);
 
-  const { setTotalItems, totalItems } = useUser();
+  //const { setTotalItems, totalItems } = useUser();
+  const { totalItems } = useUserStore();
   const getTotalCount = () => {
     return localStorage.getItem("totalCount") || totalItems;
   };
