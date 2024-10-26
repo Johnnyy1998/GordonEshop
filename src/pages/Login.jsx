@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import FormInput from "../components/FormInput";
 import SubmitBtn from "../components/SubmitBtn";
+import { customFetch } from "../utils";
 
 export const action =
   (store) =>
@@ -16,6 +17,8 @@ export const action =
       identifier: formData.get("identifier"),
       password: formData.get("password"),
     };
+    console.log(data);
+
     try {
       const response = await customFetch.post("/auth/local", data);
       const { setUser } = store.getState();
